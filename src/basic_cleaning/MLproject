@@ -6,28 +6,28 @@ entry_points:
     parameters:
 
       input_artifact:
-        description: ## ADD DESCRIPTION
+        description: Name of the input artifact from W&B
         type: string
 
       output_artifact:
-        description: ## ADD DESCRIPTION
+        description: Name of the output artifact to be saved on W&B
         type: string
 
       output_type:
-        description: ## ADD DESCRIPTION
+        description: Type of the output artifact to create
         type: string
 
       output_description:
-        description: ## ADD DESCRIPTION
+        description:  Description for the output artifact
         type: string
 
       min_price:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: Lower bound limit for acceptable prices
+        type: float
 
       max_price:
-        description: ## ADD DESCRIPTION
-        type: string
+        description: Upper bound limit for acceptable prices
+        type: float
 
 
     command: >-
