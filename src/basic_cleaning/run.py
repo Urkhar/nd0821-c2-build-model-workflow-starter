@@ -32,7 +32,7 @@ def go(args):
     logger.info("Convert last_review to datetime")
     df['last_review'] = pd.to_datetime(df['last_review'])
 
-    df.to_csv("clean_sample.csv", index=False, sep=';')
+    df.to_csv("clean_sample.csv", index=False)
 
     artifact = wandb.Artifact(
         args.output_artifact,
