@@ -13,6 +13,10 @@ import json
 
 import pandas as pd
 import numpy as np
+
+import tempfile
+from mlflow.models import infer_signature
+
 from sklearn.compose import ColumnTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.impute import SimpleImputer
@@ -103,19 +107,11 @@ def go(args):
     # HINT: use mlflow.sklearn.save_model
     # YOUR CODE HERE
     ######################################
-    with tempfile.TemporaryDirectory() as temp_dir:
 
-        signature = infer_signature(X_val[processed_features], y_pred)
-
-        export_path = os.path.join(temp_dir, "random_forest_dir")
-
-        mlflow.sklearn.save_model(
-            sk_pipe,
-            export_path,
-            serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
-            signature=signature,
-            input_example=X_val.iloc[:2],
-        )
+    mlflow.sklearn.save_model(
+        sk_pipe,
+        "random_forest_dir"
+    )
 
     ######################################
     # Upload the model we just exported to W&B
@@ -126,18 +122,18 @@ def go(args):
     # YOUR CODE HERE
     ######################################
 
-        artifact = wandb.Artifact(
+    artifact = wandb.Artifact(
             args.output_artifact,
             type="model_export",
             description="Random Forest pipeline export",
-            metadata=args.rf_config
-            )
+            metadata=rf_config
+    )
 
-        artifact.add_dir(export_path)
+    artifact.add_dir("random_forest_dir")
 
-        run.log_artifact(artifact)
+    run.log_artifact(artifact)
 
-        artifact.wait()
+
 
     # Plot feature importance
     fig_feat_imp = plot_feature_importance(sk_pipe, processed_features)
